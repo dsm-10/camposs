@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../component/check.dart';
 import '../component/location_text.dart';
@@ -19,7 +20,11 @@ class DistancePage extends StatefulWidget {
 
 class _DistancePageState extends State<DistancePage> {
   Future<Map<String, dynamic>> _start() async {
-    num latitude = 123, longitude = 1234;
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    num latitude = position.latitude, longitude = position.longitude;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString(ConstValues.tokenKey) ?? '';
 

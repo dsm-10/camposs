@@ -3,6 +3,7 @@ import 'package:camposs/view/distance_page.dart';
 import 'package:camposs/view/location_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Title;
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../component/login_botton.dart';
 import '../component/text_field.dart';
@@ -24,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     nicknameController = TextEditingController();
     passwordController = TextEditingController();
+    _getCurrentLocation();
   }
 
   @override
@@ -31,6 +33,18 @@ class _LoginPageState extends State<LoginPage> {
     nicknameController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      // 위치 권한 확인 및 요청
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+    } catch (e) {
+      throw Exception('위치 정보 거절 당함');
+    }
   }
 
   @override
