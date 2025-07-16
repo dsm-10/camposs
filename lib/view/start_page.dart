@@ -3,8 +3,8 @@ import 'package:camposs/component/relics.dart';
 import 'package:camposs/component/start_text.dart';
 import 'package:flutter/material.dart';
 
-class Start extends StatelessWidget {
-  const Start({super.key});
+class StartPage extends StatelessWidget {
+  const StartPage({super.key});
 
   @override
   Widget build(BuildContext context) {

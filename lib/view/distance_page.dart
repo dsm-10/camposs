@@ -5,8 +5,8 @@ import 'package:camposs/component/my_button.dart';
 import 'package:camposs/component/now.dart';
 import 'package:flutter/material.dart';
 
-class Distance extends StatelessWidget {
-  const Distance({super.key});
+class DistancePage extends StatelessWidget {
+  const DistancePage({super.key});
 
   @override
   Widget build(BuildContext context) {

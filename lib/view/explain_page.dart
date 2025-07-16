@@ -1,4 +1,7 @@
+import 'package:camposs/component/explain.dart';
+import 'package:camposs/component/my_button.dart';
 import 'package:camposs/component/now.dart';
+import 'package:camposs/component/out_botton.dart';
 import 'package:camposs/component/relics.dart';
 import 'package:flutter/material.dart';
 
@@ -16,10 +19,21 @@ class ExplainPage extends StatelessWidget {
           Now(when: '도착 위치'),
           SizedBox(height: 72),
           Padding(padding: const EdgeInsets.only(left: 83), child: Relics()),
-          Text('네더 유물', style: TextStyle(fontSize: 35, color: Colors.white)),
-          Text(
-            '이것은 마인크래프트에서 나온 네더유물입니다.이것은 마인크래프트에서 나온 네더유물입니다.이것은 마인크래프트에서 나온 네더유물입니다.이것은 마인크래프트에서 나온 네더유물입니다.이것은 마인크래프트에서 나온 네더유물입니다.',
-            style: TextStyle(color: Colors.white),
+          Explain(
+            name: '네더유물',
+            explain:
+                '안녕하세요 안녕하세요 안녕하세요 안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
+          ),
+          SizedBox(height: 160),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 43),
+                child: OutBotton(),
+              ),
+              SizedBox(width: 206),
+              MyButton(),
+            ],
           ),
         ],
       ),

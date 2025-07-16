@@ -1,5 +1,10 @@
 import 'package:camposs/view/distance_page.dart';
 import 'package:camposs/view/explain_page.dart';
+import 'package:camposs/view/lanking_page.dart';
+import 'package:camposs/view/location_page.dart';
+import 'package:camposs/view/login_page.dart';
+import 'package:camposs/view/my_page.dart';
+import 'package:camposs/view/start_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       debugShowCheckedModeBanner: false,
-      home: const ExplainPage(),
+      home: const DistancePage(),
     );
   }
 }
