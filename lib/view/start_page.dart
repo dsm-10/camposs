@@ -1,11 +1,17 @@
 import 'package:camposs/component/adventure.dart';
 import 'package:camposs/component/relics.dart';
 import 'package:camposs/component/start_text.dart';
+import 'package:camposs/view/distance_page.dart';
 import 'package:flutter/material.dart';
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
   const StartPage({super.key});
 
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +46,15 @@ class StartPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 76),
-            Adventure(),
+            Adventure(
+              onTap: () async {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => DistancePage()),
+                  (route) => false,
+                );
+              },
+            ),
           ],
         ),
       ),

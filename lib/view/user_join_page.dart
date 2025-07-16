@@ -1,6 +1,5 @@
 import 'package:camposs/component/util.dart';
 import 'package:camposs/view/distance_page.dart';
-import 'package:camposs/view/location_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Title;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,14 +7,14 @@ import '../component/login_botton.dart';
 import '../component/text_field.dart';
 import '../component/title.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class UserJoinPage extends StatefulWidget {
+  const UserJoinPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<UserJoinPage> createState() => _UserJoinPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _UserJoinPageState extends State<UserJoinPage> {
   late final TextEditingController nicknameController;
   late final TextEditingController passwordController;
 
@@ -35,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<String> _login({
+    Future<String> _registerUser({
       required String nickname,
       required String password,
     }) async {
@@ -43,12 +42,12 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         final response = await dio.post(
-          '${ConstValues.BaseURL}/auth/login',
+          '${ConstValues.BaseURL}/auth/register',
           data: {'nickname': nickname, 'password': password},
         );
-
-        return response.data['token'];
+        return response.data['token!'];
       } catch (err) {
+        print('이미 있는 아이디입니다');
         throw Exception(err);
       }
     }
@@ -85,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 208),
               GestureDetector(
                 onTap: () async {
-                  final String token = await _login(
+                  final String token = await _registerUser(
                     nickname: nicknameController.text,
                     password: passwordController.text,
                   );
@@ -100,12 +99,12 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => LocationPage()),
+                      MaterialPageRoute(builder: (context) => DistancePage()),
                       (route) => false,
                     );
                   }
                 },
-                child: LoginBotton(way: '로그인'),
+                child: LoginBotton(way: '회원가입'),
               ),
               SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
             ],

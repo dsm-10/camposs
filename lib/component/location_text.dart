@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LocationText extends StatelessWidget {
-  const LocationText({super.key});
+  final String distance;
+
+  const LocationText({super.key, required this.distance});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class LocationText extends StatelessWidget {
               style: DefaultTextStyle.of(context).style,
               children: <TextSpan>[
                 TextSpan(
-                  text: '50',
+                  text: distance,
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w500,

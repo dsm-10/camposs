@@ -1,6 +1,8 @@
-import 'package:camposs/component/collect.dart';
-import 'package:camposs/component/my_button.dart';
+import 'package:camposs/component/good.dart';
+import 'package:camposs/component/lanking_botton.dart';
 import 'package:camposs/component/out_botton.dart';
+import 'package:camposs/view/explain_page.dart';
+import 'package:camposs/view/rangking_page.dart';
 import 'package:flutter/material.dart';
 
 class MyPage extends StatelessWidget {
@@ -11,38 +13,95 @@ class MyPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xff1E1E1E),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 43, horizontal: 43),
+        padding: const EdgeInsets.symmetric(horizontal: 43, vertical: 43),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '랭킹 순위',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: Color(0xff93928B),
-              ),
+              '현재 순위',
+              style: TextStyle(color: Color(0xff93928B), fontSize: 16),
             ),
-            Text(
-              '전체 유적 보유 순위',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 30,
-                color: Colors.white,
+            RichText(
+              text: TextSpan(
+                style: TextStyle(fontWeight: FontWeight.w500),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: '2등:',
+                    style: TextStyle(fontSize: 25, color: Colors.white),
+                  ),
+                  TextSpan(
+                    text: ' 1등과 유물 1개 차이',
+                    style: TextStyle(fontSize: 20, color: Color(0xff93928B)),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 30),
-            Collect(level: '1. 역사박사', count: '9개'),
+            Text(
+              '나의 소유물',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             SizedBox(height: 13),
-            Collect(level: '2.지존역사박사', count: '5개'),
+            Good(level: '정말 신기한 유물', time: '1일전'),
             SizedBox(height: 13),
-            Collect(level: '3.좋은 역사박사', count: '2개'),
+            Good(level: '평범한 유물', time: '하루 전'),
             SizedBox(height: 13),
-            Collect(level: '4.유망주', count: '1개'),
-            SizedBox(height: 410),
+            Good(level: '희귀한 유물', time: '한달 전'),
+            SizedBox(height: 280),
+            RichText(
+              text: TextSpan(
+                style: TextStyle(),
+                children: const <TextSpan>[
+                  TextSpan(
+                    text: '0',
+                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.w500),
+                  ),
+                  TextSpan(
+                    text: 'm\n',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 50,
+                      color: Color(0xff93928B),
+                    ),
+                  ),
+                  TextSpan(
+                    text: '닉네임님의',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 50,
+                      color: Color(0xff93928B),
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' 홈',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 50),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [OutBotton(), MyButton()],
+              children: [
+                OutBotton(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                LankingBotton(
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => RangkingPage()),
+                      (route) => false,
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
