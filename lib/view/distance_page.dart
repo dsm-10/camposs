@@ -3,7 +3,9 @@ import 'package:camposs/component/check_botton.dart';
 import 'package:camposs/component/location_text.dart';
 import 'package:camposs/component/my_button.dart';
 import 'package:camposs/component/now.dart';
+import 'package:camposs/component/util.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DistancePage extends StatelessWidget {
   const DistancePage({super.key});
@@ -28,6 +30,14 @@ class DistancePage extends StatelessWidget {
             child: Row(
               children: [CheckBotton(), SizedBox(width: 121), MyButton()],
             ),
+          ),
+          MaterialButton(
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              final String? token = prefs.getString(ConstValues.tokenKey);
+              print("TOKEN :: ${token}");
+            },
+            child: Container(width: 50, height: 50, color: Colors.red),
           ),
         ],
       ),

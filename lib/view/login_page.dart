@@ -2,6 +2,7 @@ import 'package:camposs/component/util.dart';
 import 'package:camposs/view/distance_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Title;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../component/login_botton.dart';
 import '../component/text_field.dart';
 import '../component/title.dart';
@@ -87,7 +88,15 @@ class _LoginPageState extends State<LoginPage> {
                     nickname: nicknameController.text,
                     password: passwordController.text,
                   );
+
                   if (token.isNotEmpty) {
+                    try {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString(ConstValues.tokenKey, token);
+                    } catch (err) {
+                      print(err);
+                    }
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => DistancePage()),
