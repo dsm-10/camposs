@@ -1,15 +1,60 @@
+import 'package:camposs/component/util.dart';
+import 'package:camposs/view/distance_page.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Title;
 import '../component/login_botton.dart';
 import '../component/text_field.dart';
 import '../component/title.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late final TextEditingController nicknameController;
+  late final TextEditingController passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    nicknameController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    nicknameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Future<String> _login({
+      required String nickname,
+      required String password,
+    }) async {
+      Dio dio = Dio();
+
+      try {
+        final response = await dio.post(
+          '${ConstValues.BaseURL}/auth/login',
+          data: {'nickname': nickname, 'password': password},
+        );
+
+        return response.data['token'];
+      } catch (err) {
+        throw Exception(err);
+      }
+    }
+
     return GestureDetector(
-      onTap: (){FocusScope.of(context).unfocus();},
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         backgroundColor: Color(0xff1E1E1E),
         body: Padding(
@@ -17,14 +62,41 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 213,),
+              SizedBox(height: 213),
               Titles(),
-              SizedBox(height: 86,),
-              TextsField(hintText: '아이디를 입력하세요.', obsText: false, suffixIcon: null, errorText: '',),
-              SizedBox(height: 41,),
-              TextsField(hintText: '비밀번호를 입력하세요.', obsText: true, suffixIcon: Icon(Icons.visibility_off_outlined), errorText: '다시 확인해주세요',),
-              SizedBox(height: 208,),
-              LoginBotton(way: '로그인',),
+              SizedBox(height: 86),
+              TextsField(
+                textEditingController: nicknameController,
+                hintText: '아이디를 입력하세요.',
+                obsText: false,
+                suffixIcon: null,
+                errorText: '',
+              ),
+              SizedBox(height: 41),
+              TextsField(
+                textEditingController: passwordController,
+                hintText: '비밀번호를 입력하세요.',
+                obsText: true,
+                suffixIcon: Icon(Icons.visibility_off_outlined),
+                errorText: '다시 확인해주세요',
+              ),
+              SizedBox(height: 208),
+              GestureDetector(
+                onTap: () async {
+                  final String token = await _login(
+                    nickname: nicknameController.text,
+                    password: passwordController.text,
+                  );
+                  if (token.isNotEmpty) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => DistancePage()),
+                      (route) => false,
+                    );
+                  }
+                },
+                child: LoginBotton(way: '로그인'),
+              ),
             ],
           ),
         ),
