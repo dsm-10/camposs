@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 203,),
+              SizedBox(height: 213,),
               Titles(),
               SizedBox(height: 86,),
               TextsField(hintText: '아이디를 입력하세요', obsText: false, suffixIcon: null, errorText: '',),

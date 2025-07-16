@@ -14,15 +14,17 @@ final String errorText;
     );
     return TextFormField(
       obscureText: obsText,
+        style: TextStyle(fontWeight: FontWeight.w400),
         decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: TextStyle(fontWeight: FontWeight.w400),
           border: baseboder,
             fillColor: Color(0xffBBBAB5),
           filled: true,
           suffixIcon: suffixIcon,
-         errorText: errorText,
+         errorText: null,
+          suffixStyle: TextStyle(fontWeight: FontWeight.w400)
         ),
-      textInputAction: TextInputAction.search,
     );
   }
 }

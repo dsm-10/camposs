@@ -11,7 +11,7 @@ final String way;
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 134),
+        padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 150),
         child: Text(way,style: TextStyle(fontSize: 20,color: Colors.white),),
       ),
     );
