@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Collect extends StatelessWidget {
   const Collect({super.key, required this.level, required this.count});
@@ -14,12 +15,7 @@ class Collect extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(
-          left: 15,
-          right: 14,
-          top: 14,
-          bottom: 13,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 14.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

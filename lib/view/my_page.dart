@@ -129,15 +129,13 @@ class _State extends State<MyPage> {
                             },
                           ),
                           LankingBotton(
-                            onTap: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RangkingPage(),
-                                ),
-                                (route) => false,
-                              );
-                            },
+                            onTap: () => Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RangKingPage(),
+                              ),
+                              (route) => false,
+                            ),
                           ),
                         ],
                       ),
