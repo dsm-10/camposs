@@ -187,6 +187,7 @@ class _DistancePageState extends State<DistancePage> {
               targetLon!,
             );
 
+            print("ID:: ${target['heritage_id']}");
             print("DIST:: ${targetLat}, ${targetLon}");
 
             final absoluteBearing = calculateBearing(
@@ -262,7 +263,15 @@ class _DistancePageState extends State<DistancePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Check(id: snapshot.data['heritage_id']),
+                      Builder(
+                        builder: (context) {
+                          if (currentDistance!.toInt() <= 50) {
+                            return Check(id: snapshot.data['heritage_id']);
+                          } else {
+                            return SizedBox(width: 100.w);
+                          }
+                        },
+                      ),
                       MyButton(
                         onTap: () {
                           Navigator.push(
