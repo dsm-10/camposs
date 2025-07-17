@@ -24,13 +24,17 @@ class _DistancePageState extends State<DistancePage> {
   double? targetLat;
   double? targetLon;
   double? currentDistance;
-  double heading = 0.0;
-  double phoneHeading = 0.0;
+  double heading = 0.0; // UI가 가리켜야 하는 방향
+  double phoneHeading = 0.0; // 기기가 바라보는 방향
+  double _currentLat = 0.0;
+  double _currentLon = 0.0;
+
   StreamSubscription<Position>? positionStream;
   StreamSubscription<CompassEvent>? compassStream;
   bool isLoading = true;
   bool isError = false;
   Timer? _updateTimer;
+  double? lastHeading;
 
   @override
   void initState() {
@@ -48,13 +52,27 @@ class _DistancePageState extends State<DistancePage> {
   }
 
   void _startCompassTracking() {
-    compassStream = FlutterCompass.events!.listen((CompassEvent event) {
-      if (!mounted) return;
+    compassStream = FlutterCompass.events!.listen((event) {
+      if (!mounted || event.heading == null) return;
 
-      if (event.heading != null) {
-        setState(() {
-          phoneHeading = event.heading!;
-        });
+      final newHeading = event.heading!;
+      if (lastHeading == null || (newHeading - lastHeading!).abs() > 1.0) {
+        lastHeading = newHeading;
+        phoneHeading = newHeading;
+
+        if (targetLat != null && targetLon != null) {
+          final bearing = calculateBearing(
+            _currentLat,
+            _currentLon,
+            targetLat!,
+            targetLon!,
+          );
+          final relative = calculateRelativeHeading(bearing);
+
+          setState(() {
+            heading = relative;
+          });
+        }
       }
     });
   }
@@ -64,16 +82,15 @@ class _DistancePageState extends State<DistancePage> {
   }
 
   double calculateBearing(double lat1, double lon1, double lat2, double lon2) {
-    final double dLon = (lon2 - lon1) * (pi / 180);
-    final double lat1Rad = lat1 * (pi / 180);
-    final double lat2Rad = lat2 * (pi / 180);
+    final dLon = (lon2 - lon1) * (pi / 180);
+    final lat1Rad = lat1 * (pi / 180);
+    final lat2Rad = lat2 * (pi / 180);
 
-    final double y = sin(dLon) * cos(lat2Rad);
-    final double x =
+    final y = sin(dLon) * cos(lat2Rad);
+    final x =
         cos(lat1Rad) * sin(lat2Rad) - sin(lat1Rad) * cos(lat2Rad) * cos(dLon);
 
-    double bearing = atan2(y, x);
-    bearing = bearing * (180 / pi);
+    double bearing = atan2(y, x) * (180 / pi);
     return (bearing + 360) % 360;
   }
 
@@ -81,6 +98,8 @@ class _DistancePageState extends State<DistancePage> {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
+    _currentLat = position.latitude;
+    _currentLon = position.longitude;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString(ConstValues.tokenKey) ?? '';
@@ -89,7 +108,7 @@ class _DistancePageState extends State<DistancePage> {
 
     final response = await dio.get(
       '${ConstValues.BaseURL2}/compass/next',
-      queryParameters: {'lat': position.latitude, 'lon': position.longitude},
+      queryParameters: {'lat': _currentLat, 'lon': _currentLon},
       options: Options(
         headers: {'Authorization': 'Bearer $accessToken'},
         validateStatus: (status) => status != null && status < 500,
@@ -109,20 +128,22 @@ class _DistancePageState extends State<DistancePage> {
       targetLat = target['latitude'];
       targetLon = target['longitude'];
 
-      Position initialPosition = await Geolocator.getCurrentPosition(
+      final initialPos = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
       );
+      _currentLat = initialPos.latitude;
+      _currentLon = initialPos.longitude;
 
-      double initialDistance = Geolocator.distanceBetween(
-        initialPosition.latitude,
-        initialPosition.longitude,
+      final initialDistance = Geolocator.distanceBetween(
+        _currentLat,
+        _currentLon,
         targetLat!,
         targetLon!,
       );
 
-      double initialBearing = calculateBearing(
-        initialPosition.latitude,
-        initialPosition.longitude,
+      final initialBearing = calculateBearing(
+        _currentLat,
+        _currentLon,
         targetLat!,
         targetLon!,
       );
@@ -133,7 +154,6 @@ class _DistancePageState extends State<DistancePage> {
         isLoading = false;
       });
 
-      double lastUpdateHeading = heading;
       double lastUpdateDistance = initialDistance;
 
       positionStream =
@@ -145,38 +165,36 @@ class _DistancePageState extends State<DistancePage> {
           ).listen((Position pos) {
             if (!mounted) return;
 
-            double dist = Geolocator.distanceBetween(
-              pos.latitude,
-              pos.longitude,
+            _currentLat = pos.latitude;
+            _currentLon = pos.longitude;
+
+            final dist = Geolocator.distanceBetween(
+              _currentLat,
+              _currentLon,
               targetLat!,
               targetLon!,
             );
 
-            double absoluteBearing = calculateBearing(
-              pos.latitude,
-              pos.longitude,
+            final absoluteBearing = calculateBearing(
+              _currentLat,
+              _currentLon,
               targetLat!,
               targetLon!,
             );
 
-            double relativeBearing = calculateRelativeHeading(absoluteBearing);
+            final relativeBearing = calculateRelativeHeading(absoluteBearing);
 
-            if ((relativeBearing - lastUpdateHeading).abs() > 10.0 ||
-                (dist - lastUpdateDistance).abs() > 3.0) {
+            if ((dist - lastUpdateDistance).abs() > 3.0) {
               _updateTimer?.cancel();
-              _updateTimer = Timer(const Duration(milliseconds: 500), () {
-                if (mounted) {
-                  setState(() {
-                    currentDistance = dist;
-                    heading = relativeBearing;
-                  });
-                  lastUpdateHeading = relativeBearing;
-                  lastUpdateDistance = dist;
+              _updateTimer = Timer(const Duration(milliseconds: 300), () {
+                if (!mounted) return;
 
-                  print(
-                    "📍 방향: $relativeBearing도 | turns: ${relativeBearing / 360.0}",
-                  );
-                }
+                setState(() {
+                  currentDistance = dist;
+                  heading = relativeBearing;
+                });
+
+                lastUpdateDistance = dist;
               });
             }
           });
@@ -215,7 +233,8 @@ class _DistancePageState extends State<DistancePage> {
           Padding(
             padding: EdgeInsets.all(100.sp),
             child: AnimatedRotation(
-              duration: const Duration(milliseconds: 800),
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOut,
               turns: heading / 360.0,
               child: Image.asset('asset/images/Frame.png', width: 100.w),
             ),
