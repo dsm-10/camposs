@@ -188,7 +188,8 @@ class _DistancePageState extends State<DistancePage> {
             );
 
             print("ID:: ${target['heritage_id']}");
-            print("DIST:: ${targetLat}, ${targetLon}");
+            print("LAT, LON:: ${targetLat}, ${targetLon}");
+            print("DIST:: ${target['distance']}");
 
             final absoluteBearing = calculateBearing(
               _currentLat,
