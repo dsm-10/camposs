@@ -19,6 +19,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoading = false;
+
   late final TextEditingController nicknameController;
   late final TextEditingController passwordController;
 
@@ -53,6 +55,8 @@ class _LoginPageState extends State<LoginPage> {
     required String nickname,
     required String password,
   }) async {
+    setState(() => isLoading = true);
+
     Dio dio = Dio();
 
     try {
@@ -61,8 +65,10 @@ class _LoginPageState extends State<LoginPage> {
         data: {'nickname': nickname, 'password': password},
       );
 
+      setState(() => isLoading = false);
       return response.data['token'];
     } catch (err) {
+      setState(() => isLoading = false);
       throw Exception(err);
     }
   }
@@ -123,7 +129,15 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     }
                   },
-                  child: LoginBotton(way: '로그인'),
+                  child: Builder(
+                    builder: (context) {
+                      if (isLoading) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return LoginBotton(way: '로그인');
+                      }
+                    },
+                  ),
                 ),
                 SizedBox(height: 20.h),
                 GestureDetector(

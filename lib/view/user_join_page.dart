@@ -15,6 +15,8 @@ class UserJoinPage extends StatefulWidget {
 }
 
 class _UserJoinPageState extends State<UserJoinPage> {
+  bool isLoading = false;
+
   late final TextEditingController nicknameController;
   late final TextEditingController passwordController;
 
@@ -36,6 +38,7 @@ class _UserJoinPageState extends State<UserJoinPage> {
     required String nickname,
     required String password,
   }) async {
+    setState(() => isLoading = true);
     Dio dio = Dio();
 
     try {
@@ -43,9 +46,10 @@ class _UserJoinPageState extends State<UserJoinPage> {
         '${ConstValues.BaseURL}/auth/register',
         data: {'nickname': nickname, 'password': password},
       );
-
+      setState(() => isLoading = false);
       return response.statusCode!;
     } catch (err) {
+      setState(() => isLoading = false);
       throw Exception(err);
     }
   }
@@ -99,7 +103,15 @@ class _UserJoinPageState extends State<UserJoinPage> {
                       );
                     }
                   },
-                  child: LoginBotton(way: '회원가입'),
+                  child: Builder(
+                    builder: (context) {
+                      if (isLoading) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return LoginBotton(way: '회원가입');
+                      }
+                    },
+                  ),
                 ),
                 SizedBox(height: 20.h),
                 GestureDetector(
