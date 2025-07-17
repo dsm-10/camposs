@@ -75,56 +75,58 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xff1E1E1E),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 41.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 213.h),
-              Titles(),
-              SizedBox(height: 86.h),
-              TextsField(
-                textEditingController: nicknameController,
-                hintText: '아이디를 입력하세요.',
-                obsText: false,
-                suffixIcon: null,
-                errorText: '',
-              ),
-              SizedBox(height: 41.h),
-              TextsField(
-                textEditingController: passwordController,
-                hintText: '비밀번호를 입력하세요.',
-                obsText: true,
-                suffixIcon: Icon(Icons.visibility_off_outlined),
-                errorText: '다시 확인해주세요',
-              ),
-              SizedBox(height: 208.h),
-              GestureDetector(
-                onTap: () async {
-                  final String token = await _login(
-                    nickname: nicknameController.text,
-                    password: passwordController.text,
-                  );
-
-                  if (token.isNotEmpty) {
-                    try {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setString(ConstValues.tokenKey, token);
-                    } catch (err) {
-                      print(err);
-                    }
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => DistancePage()),
-                      (route) => false,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 41.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 213.h),
+                Titles(),
+                SizedBox(height: 86.h),
+                TextsField(
+                  textEditingController: nicknameController,
+                  hintText: '아이디를 입력하세요.',
+                  obsText: false,
+                  suffixIcon: null,
+                  errorText: '',
+                ),
+                SizedBox(height: 20.h),
+                TextsField(
+                  textEditingController: passwordController,
+                  hintText: '비밀번호를 입력하세요.',
+                  obsText: true,
+                  suffixIcon: Icon(Icons.visibility_off_outlined),
+                  errorText: '다시 확인해주세요',
+                ),
+                SizedBox(height: 208.h),
+                GestureDetector(
+                  onTap: () async {
+                    final String token = await _login(
+                      nickname: nicknameController.text,
+                      password: passwordController.text,
                     );
-                  }
-                },
-                child: LoginBotton(way: '로그인'),
-              ),
-              SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-            ],
+
+                    if (token.isNotEmpty) {
+                      try {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.setString(ConstValues.tokenKey, token);
+                      } catch (err) {
+                        print(err);
+                      }
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => DistancePage()),
+                        (route) => false,
+                      );
+                    }
+                  },
+                  child: LoginBotton(way: '로그인'),
+                ),
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+              ],
+            ),
           ),
         ),
       ),
