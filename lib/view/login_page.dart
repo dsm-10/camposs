@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isLoading = false;
+  bool isLoading = false, pwObsText = true;
 
   late final TextEditingController nicknameController;
   late final TextEditingController passwordController;
@@ -102,8 +102,19 @@ class _LoginPageState extends State<LoginPage> {
                 TextsField(
                   textEditingController: passwordController,
                   hintText: '비밀번호를 입력하세요.',
-                  obsText: true,
-                  suffixIcon: Icon(Icons.visibility_off_outlined),
+                  obsText: pwObsText,
+                  suffixIcon: GestureDetector(
+                    onTap: () => setState(() => pwObsText = !pwObsText),
+                    child: Builder(
+                      builder: (context) {
+                        if (pwObsText) {
+                          return Icon(Icons.visibility);
+                        } else {
+                          return Icon(Icons.visibility_off_outlined);
+                        }
+                      },
+                    ),
+                  ),
                   errorText: '다시 확인해주세요',
                 ),
                 SizedBox(height: 190.h),
