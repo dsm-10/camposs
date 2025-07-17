@@ -80,10 +80,7 @@ class _DistancePageState extends State<DistancePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Now(when: '현재 위치'),
-                Padding(
-                  padding: const EdgeInsets.only(top: 0, left: 0),
-                  child: Check(),
-                ),
+                Check(),
                 LocationText(distance: snapshot.data!['distance'].toString()),
                 SizedBox(height: 60.h),
                 Padding(

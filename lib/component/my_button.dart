@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyButton extends StatelessWidget {
   const MyButton({super.key, this.onTap});
@@ -12,11 +13,11 @@ class MyButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Color(0xff5A5856),
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: BorderRadius.circular(90.r),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 21),
-          child: Icon(Icons.person, color: Colors.white, size: 40),
+          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 21.w),
+          child: Icon(Icons.person, color: Colors.white, size: 40.sp),
         ),
       ),
     );

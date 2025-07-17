@@ -17,47 +17,45 @@ class _StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff1E1E1E),
-      body: Padding(
-        padding: EdgeInsets.only(
-          top: 192.h,
-          left: 60.w,
-          right: 60.w,
-          bottom: 55.h,
-        ),
-        child: Column(
-          children: [
-            Relics(),
-            SizedBox(height: 57.h),
-            StartText(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Row(
-                    children: [
-                      SizedBox(height: 107.h),
-                      Icon(Icons.fiber_manual_record, color: Color(0xff5A5856)),
-                      SizedBox(width: 15.w),
-                      Icon(Icons.fiber_manual_record, color: Colors.white),
-                      SizedBox(width: 15.w),
-                      Icon(Icons.fiber_manual_record, color: Color(0xff5A5856)),
-                    ],
-                  ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Relics(),
+          SizedBox(height: 57.h),
+          StartText(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Row(
+                  children: [
+                    SizedBox(height: 107.h),
+                    Icon(
+                      Icons.fiber_manual_record,
+                      color: Color(0xff5A5856),
+                      size: 12.sp,
+                    ),
+                    SizedBox(width: 15.w),
+                    Icon(
+                      Icons.fiber_manual_record,
+                      color: Colors.white,
+                      size: 12.sp,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(height: 76.h),
-            Adventure(
-              onTap: () async {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => DistancePage()),
-                  (route) => false,
-                );
-              },
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          Adventure(
+            onTap: () async {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => DistancePage()),
+                (route) => false,
+              );
+            },
+          ),
+        ],
       ),
     );
   }

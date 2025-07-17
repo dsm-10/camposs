@@ -73,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xff1E1E1E),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 41.w),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LocationText extends StatelessWidget {
   final String distance;
@@ -19,7 +20,7 @@ class LocationText extends StatelessWidget {
                 TextSpan(
                   text: distance,
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
                   ),
@@ -27,20 +28,15 @@ class LocationText extends StatelessWidget {
                 TextSpan(
                   text: 'm',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35.sp,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff93928B),
                   ),
                 ),
                 TextSpan(
-                  text: '사용자의 오른쪽',
-                  style: DefaultTextStyle.of(context).style,
-                  children: <TextSpan>[],
-                ),
-                TextSpan(
                   text: '\n사용자의',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35.sp,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff93928B),
                   ),
@@ -48,7 +44,7 @@ class LocationText extends StatelessWidget {
                 TextSpan(
                   text: ' 오른쪽',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35.sp,
                     fontWeight: FontWeight.w400,
                     color: Colors.white,
                   ),

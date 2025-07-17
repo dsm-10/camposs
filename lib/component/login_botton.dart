@@ -13,8 +13,10 @@ class LoginBotton extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 145),
-        child: Text(way, style: TextStyle(fontSize: 20, color: Colors.white)),
+        padding: const EdgeInsets.symmetric(vertical: 18),
+        child: Center(
+          child: Text(way, style: TextStyle(fontSize: 20, color: Colors.white)),
+        ),
       ),
     );
   }

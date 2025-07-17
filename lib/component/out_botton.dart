@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OutBotton extends StatelessWidget {
   const OutBotton({super.key, this.onTap});
@@ -11,12 +12,12 @@ class OutBotton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: BorderRadius.circular(90.r),
           color: Color(0xff5A5856),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: Icon(Icons.close, color: Colors.white, size: 40),
+          padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.h),
+          child: Icon(Icons.close, color: Colors.white, weight: 38.81.sp),
         ),
       ),
     );

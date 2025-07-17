@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LankingBotton extends StatelessWidget {
   const LankingBotton({super.key, this.onTap});
@@ -12,11 +13,11 @@ class LankingBotton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Color(0xff5A5856),
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: BorderRadius.circular(90.r),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 5),
-          child: Image.asset('asset/images/rank.png'),
+          padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.h),
+          child: Image.asset('asset/images/rank.png', width: 38.81.w),
         ),
       ),
     );
