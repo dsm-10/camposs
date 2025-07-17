@@ -3,6 +3,7 @@ import 'package:camposs/view/distance_page.dart';
 import 'package:camposs/view/location_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Title;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../component/login_botton.dart';
@@ -74,13 +75,13 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: Color(0xff1E1E1E),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 41),
+          padding: EdgeInsets.symmetric(horizontal: 41.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 213),
+              SizedBox(height: 213.h),
               Titles(),
-              SizedBox(height: 86),
+              SizedBox(height: 86.h),
               TextsField(
                 textEditingController: nicknameController,
                 hintText: '아이디를 입력하세요.',
@@ -88,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                 suffixIcon: null,
                 errorText: '',
               ),
-              SizedBox(height: 41),
+              SizedBox(height: 41.h),
               TextsField(
                 textEditingController: passwordController,
                 hintText: '비밀번호를 입력하세요.',
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 suffixIcon: Icon(Icons.visibility_off_outlined),
                 errorText: '다시 확인해주세요',
               ),
-              SizedBox(height: 208),
+              SizedBox(height: 208.h),
               GestureDetector(
                 onTap: () async {
                   final String token = await _login(

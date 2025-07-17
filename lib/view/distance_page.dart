@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../component/check.dart';
@@ -84,12 +85,12 @@ class _DistancePageState extends State<DistancePage> {
                   child: Check(),
                 ),
                 LocationText(distance: snapshot.data!['distance'].toString()),
-                SizedBox(height: 60),
+                SizedBox(height: 60.h),
                 Padding(
-                  padding: const EdgeInsets.only(left: 43),
+                  padding: EdgeInsets.only(left: 43.w),
                   child: Row(
                     children: [
-                      SizedBox(width: 121),
+                      SizedBox(width: 121.w),
                       MyButton(
                         onTap: () {
                           Navigator.push(

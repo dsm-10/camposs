@@ -3,6 +3,7 @@ import 'package:camposs/component/relics.dart';
 import 'package:camposs/component/start_text.dart';
 import 'package:camposs/view/distance_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -17,16 +18,16 @@ class _StartPageState extends State<StartPage> {
     return Scaffold(
       backgroundColor: Color(0xff1E1E1E),
       body: Padding(
-        padding: const EdgeInsets.only(
-          top: 192,
-          left: 60,
-          right: 60,
-          bottom: 55,
+        padding: EdgeInsets.only(
+          top: 192.h,
+          left: 60.w,
+          right: 60.w,
+          bottom: 55.h,
         ),
         child: Column(
           children: [
             Relics(),
-            SizedBox(height: 57),
+            SizedBox(height: 57.h),
             StartText(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -34,18 +35,18 @@ class _StartPageState extends State<StartPage> {
                 Center(
                   child: Row(
                     children: [
-                      SizedBox(height: 107),
+                      SizedBox(height: 107.h),
                       Icon(Icons.fiber_manual_record, color: Color(0xff5A5856)),
-                      SizedBox(width: 15),
+                      SizedBox(width: 15.w),
                       Icon(Icons.fiber_manual_record, color: Colors.white),
-                      SizedBox(width: 15),
+                      SizedBox(width: 15.w),
                       Icon(Icons.fiber_manual_record, color: Color(0xff5A5856)),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 76),
+            SizedBox(height: 76.h),
             Adventure(
               onTap: () async {
                 Navigator.pushAndRemoveUntil(

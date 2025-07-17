@@ -4,6 +4,7 @@ import 'package:camposs/component/out_botton.dart';
 import 'package:camposs/view/explain_page.dart';
 import 'package:camposs/view/rangking_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
@@ -13,7 +14,7 @@ class MyPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xff1E1E1E),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 43, vertical: 43),
+        padding: EdgeInsets.symmetric(horizontal: 43.h, vertical: 43.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -36,7 +37,7 @@ class MyPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 30.h),
             Text(
               '나의 소유물',
               style: TextStyle(
@@ -45,13 +46,13 @@ class MyPage extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 13),
+            SizedBox(height: 13.h),
             Good(level: '정말 신기한 유물', time: '1일전'),
-            SizedBox(height: 13),
+            SizedBox(height: 13.h),
             Good(level: '평범한 유물', time: '하루 전'),
-            SizedBox(height: 13),
+            SizedBox(height: 13.h),
             Good(level: '희귀한 유물', time: '한달 전'),
-            SizedBox(height: 280),
+            SizedBox(height: 280.h),
             RichText(
               text: TextSpan(
                 style: TextStyle(),
@@ -83,7 +84,7 @@ class MyPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 50.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

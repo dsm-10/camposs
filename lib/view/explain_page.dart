@@ -7,6 +7,7 @@ import 'package:camposs/view/distance_page.dart';
 import 'package:camposs/view/my_page.dart';
 import 'package:camposs/view/rangking_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExplainPage extends StatelessWidget {
   const ExplainPage({super.key});
@@ -20,8 +21,11 @@ class ExplainPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Now(when: '도착 위치'),
-          SizedBox(height: 72),
-          Padding(padding: const EdgeInsets.only(left: 83), child: Relics()),
+          SizedBox(height: 72.h),
+          Padding(
+            padding: EdgeInsets.only(left: 83.w),
+            child: Relics(),
+          ),
           Explain(
             name: '네더유물',
             explain:
@@ -31,7 +35,7 @@ class ExplainPage extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 43),
+                padding: EdgeInsets.only(left: 43.w),
                 child: OutBotton(
                   onTap: () {
                     Navigator.pushAndRemoveUntil(
@@ -42,7 +46,7 @@ class ExplainPage extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(width: 206),
+              SizedBox(width: 206.w),
               MyButton(
                 onTap: () {
                   Navigator.push(

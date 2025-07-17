@@ -4,6 +4,7 @@ import 'package:camposs/component/out_botton.dart';
 import 'package:camposs/view/distance_page.dart';
 import 'package:camposs/view/my_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RangkingPage extends StatelessWidget {
   const RangkingPage({super.key});
@@ -13,7 +14,7 @@ class RangkingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xff1E1E1E),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 43, horizontal: 43),
+        padding: EdgeInsets.symmetric(vertical: 43.h, horizontal: 43.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,15 +34,15 @@ class RangkingPage extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 30.h),
             Collect(level: '1. 역사박사', count: '9개'),
-            SizedBox(height: 13),
+            SizedBox(height: 13.h),
             Collect(level: '2.지존역사박사', count: '5개'),
-            SizedBox(height: 13),
+            SizedBox(height: 13.h),
             Collect(level: '3.좋은 역사박사', count: '2개'),
-            SizedBox(height: 13),
+            SizedBox(height: 13.h),
             Collect(level: '4.유망주', count: '1개'),
-            SizedBox(height: 410),
+            SizedBox(height: 410.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
