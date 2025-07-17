@@ -241,26 +241,29 @@ class _DistancePageState extends State<DistancePage> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Now(when: '현재 위치'),
-          Padding(
-            padding: EdgeInsets.all(100.sp),
+          SizedBox(height: 43.h),
+          Now(),
+          SizedBox(height: 100.h),
+          Center(
             child: AnimatedRotation(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOut,
               turns: heading / 360.0,
-              child: Image.asset('asset/images/Frame.png', width: 100.w),
+              child: Image.asset('asset/images/Frame.png', width: 150.w),
             ),
           ),
+          SizedBox(height: 100.h),
           LocationText(
             distance: currentDistance != null
                 ? currentDistance!.toStringAsFixed(2)
                 : '계산 중...',
             direction: getDirectionText(heading),
           ),
-          SizedBox(height: 60.h),
+          SizedBox(height: 30.h),
           Padding(
-            padding: EdgeInsets.only(left: 43.w),
+            padding: EdgeInsets.only(right: 30.w),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(width: 121.w),
                 MyButton(

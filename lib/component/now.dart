@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Now extends StatelessWidget {
-  const Now({super.key, required this.when});
-
-  final String when;
+  const Now({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +12,7 @@ class Now extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            when,
+            '현재 위치',
             style: TextStyle(
               fontSize: 17.sp,
               fontWeight: FontWeight.w400,

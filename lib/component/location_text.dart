@@ -19,13 +19,12 @@ class LocationText extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(
-              text: '50m\n',
               style: DefaultTextStyle.of(context).style,
               children: <TextSpan>[
                 TextSpan(
                   text: distance,
                   style: TextStyle(
-                    fontSize: 35.sp,
+                    fontSize: 50.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
                   ),
@@ -33,7 +32,7 @@ class LocationText extends StatelessWidget {
                 TextSpan(
                   text: 'm',
                   style: TextStyle(
-                    fontSize: 35.sp,
+                    fontSize: 45.sp,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff93928B),
                   ),
@@ -41,7 +40,7 @@ class LocationText extends StatelessWidget {
                 TextSpan(
                   text: '\n사용자의',
                   style: TextStyle(
-                    fontSize: 35.sp,
+                    fontSize: 45.sp,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff93928B),
                   ),
@@ -49,7 +48,7 @@ class LocationText extends StatelessWidget {
                 TextSpan(
                   text: ' $direction',
                   style: TextStyle(
-                    fontSize: 35.sp,
+                    fontSize: 50.sp,
                     fontWeight: FontWeight.w400,
                     color: Colors.white,
                   ),
