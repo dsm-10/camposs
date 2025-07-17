@@ -1,6 +1,7 @@
 import 'package:camposs/component/util.dart';
 import 'package:camposs/view/distance_page.dart';
 import 'package:camposs/view/location_page.dart';
+import 'package:camposs/view/user_join_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Title;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,26 +49,26 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<String> _login({
+    required String nickname,
+    required String password,
+  }) async {
+    Dio dio = Dio();
+
+    try {
+      final response = await dio.post(
+        '${ConstValues.BaseURL}/auth/login',
+        data: {'nickname': nickname, 'password': password},
+      );
+
+      return response.data['token'];
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<String> _login({
-      required String nickname,
-      required String password,
-    }) async {
-      Dio dio = Dio();
-
-      try {
-        final response = await dio.post(
-          '${ConstValues.BaseURL}/auth/login',
-          data: {'nickname': nickname, 'password': password},
-        );
-
-        return response.data['token'];
-      } catch (err) {
-        throw Exception(err);
-      }
-    }
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -99,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                   suffixIcon: Icon(Icons.visibility_off_outlined),
                   errorText: '다시 확인해주세요',
                 ),
-                SizedBox(height: 208.h),
+                SizedBox(height: 190.h),
                 GestureDetector(
                   onTap: () async {
                     final String token = await _login(
@@ -124,6 +125,19 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: LoginBotton(way: '로그인'),
                 ),
+                SizedBox(height: 20.h),
+                GestureDetector(
+                  onTap: () => Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserJoinPage()),
+                    (route) => false,
+                  ),
+                  child: Text(
+                    '아직 가입 안하셨나요?',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(height: 20.h),
                 SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
               ],
             ),

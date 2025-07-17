@@ -1,5 +1,6 @@
 import 'package:camposs/view/distance_page.dart';
 import 'package:camposs/view/login_page.dart';
+import 'package:camposs/view/user_join_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           ),
           debugShowCheckedModeBanner: false,
-          home: const LoginPage(),
+          home: const UserJoinPage(),
         );
       },
     );
