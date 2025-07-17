@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:camposs/component/check.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +41,6 @@ class _DistancePageState extends State<DistancePage> {
   void initState() {
     super.initState();
     _fetchTargetAndTrack();
-    _startCompassTracking();
   }
 
   @override
@@ -134,7 +134,7 @@ class _DistancePageState extends State<DistancePage> {
     }
   }
 
-  Future<void> _fetchTargetAndTrack() async {
+  Future<dynamic> _fetchTargetAndTrack() async {
     try {
       final target = await _start();
       targetLat = target['latitude'];
@@ -187,6 +187,8 @@ class _DistancePageState extends State<DistancePage> {
               targetLon!,
             );
 
+            print("DIST:: ${targetLat}, ${targetLon}");
+
             final absoluteBearing = calculateBearing(
               _currentLat,
               _currentLon,
@@ -210,6 +212,10 @@ class _DistancePageState extends State<DistancePage> {
               });
             }
           });
+
+      _startCompassTracking();
+
+      return target;
     } catch (e) {
       print("오류 발생: $e");
       setState(() {
@@ -217,67 +223,78 @@ class _DistancePageState extends State<DistancePage> {
         isError = true;
       });
     }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Scaffold(
-        backgroundColor: Color(0xff1E1E1E),
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (isError) {
-      return const Scaffold(
-        backgroundColor: Color(0xff1E1E1E),
-        body: Center(child: Text("ERROR 났음")),
-      );
-    }
-
     return Scaffold(
       backgroundColor: const Color(0xff1E1E1E),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 43.h),
-          Now(),
-          SizedBox(height: 100.h),
-          Center(
-            child: AnimatedRotation(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOut,
-              turns: heading / 360.0,
-              child: Image.asset('asset/images/Frame.png', width: 150.w),
-            ),
-          ),
-          SizedBox(height: 100.h),
-          LocationText(
-            distance: currentDistance != null
-                ? currentDistance!.toStringAsFixed(2)
-                : '계산 중...',
-            direction: getDirectionText(heading),
-          ),
-          SizedBox(height: 30.h),
-          Padding(
-            padding: EdgeInsets.only(right: 30.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      body: FutureBuilder(
+        future: _fetchTargetAndTrack(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(width: 121.w),
-                MyButton(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MyPage()),
-                    );
-                  },
+                SizedBox(height: 43.h),
+                Now(),
+                SizedBox(height: 100.h),
+                Center(
+                  child: AnimatedRotation(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    turns: heading / 360.0,
+                    child: Image.asset('asset/images/Frame.png', width: 150.w),
+                  ),
+                ),
+                SizedBox(height: 100.h),
+                LocationText(
+                  distance: currentDistance != null
+                      ? currentDistance!.toStringAsFixed(2)
+                      : '계산 중...',
+                  direction: getDirectionText(heading),
+                ),
+                SizedBox(height: 30.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Check(id: snapshot.data['heritage_id']),
+                      MyButton(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyPage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
-          ),
-        ],
+            );
+          } else if (isError) {
+            return const Scaffold(
+              backgroundColor: Color(0xff1E1E1E),
+              body: Center(child: Text("ERROR 났음")),
+            );
+          } else if (isLoading) {
+            return const Scaffold(
+              backgroundColor: Color(0xff1E1E1E),
+              body: Center(child: CircularProgressIndicator()),
+            );
+          } else {
+            return const Scaffold(
+              backgroundColor: Color(0xff1E1E1E),
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+        },
       ),
     );
   }

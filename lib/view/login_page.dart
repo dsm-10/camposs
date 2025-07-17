@@ -1,6 +1,5 @@
 import 'package:camposs/component/util.dart';
 import 'package:camposs/view/distance_page.dart';
-import 'package:camposs/view/location_page.dart';
 import 'package:camposs/view/user_join_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart' hide Title;
