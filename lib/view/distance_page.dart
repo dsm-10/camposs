@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
-
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../component/check.dart';
 import '../component/location_text.dart';
 import '../component/my_button.dart';
 import '../component/now.dart';
@@ -24,20 +24,57 @@ class _DistancePageState extends State<DistancePage> {
   double? targetLat;
   double? targetLon;
   double? currentDistance;
+  double heading = 0.0;
+  double phoneHeading = 0.0;
   StreamSubscription<Position>? positionStream;
+  StreamSubscription<CompassEvent>? compassStream;
   bool isLoading = true;
   bool isError = false;
+  Timer? _updateTimer;
 
   @override
   void initState() {
     super.initState();
     _fetchTargetAndTrack();
+    _startCompassTracking();
   }
 
   @override
   void dispose() {
     positionStream?.cancel();
+    compassStream?.cancel();
+    _updateTimer?.cancel();
     super.dispose();
+  }
+
+  void _startCompassTracking() {
+    compassStream = FlutterCompass.events!.listen((CompassEvent event) {
+      if (!mounted) return;
+
+      if (event.heading != null) {
+        setState(() {
+          phoneHeading = event.heading!;
+        });
+      }
+    });
+  }
+
+  double calculateRelativeHeading(double targetBearing) {
+    return (targetBearing - phoneHeading + 360) % 360;
+  }
+
+  double calculateBearing(double lat1, double lon1, double lat2, double lon2) {
+    final double dLon = (lon2 - lon1) * (pi / 180);
+    final double lat1Rad = lat1 * (pi / 180);
+    final double lat2Rad = lat2 * (pi / 180);
+
+    final double y = sin(dLon) * cos(lat2Rad);
+    final double x =
+        cos(lat1Rad) * sin(lat2Rad) - sin(lat1Rad) * cos(lat2Rad) * cos(dLon);
+
+    double bearing = atan2(y, x);
+    bearing = bearing * (180 / pi);
+    return (bearing + 360) % 360;
   }
 
   Future<Map<String, dynamic>> _start() async {
@@ -72,24 +109,42 @@ class _DistancePageState extends State<DistancePage> {
       targetLat = target['latitude'];
       targetLon = target['longitude'];
 
-      // 현재 거리도 한 번 계산
       Position initialPosition = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
       );
-      currentDistance = Geolocator.distanceBetween(
+
+      double initialDistance = Geolocator.distanceBetween(
         initialPosition.latitude,
         initialPosition.longitude,
         targetLat!,
         targetLon!,
       );
 
-      // 실시간 추적 시작
+      double initialBearing = calculateBearing(
+        initialPosition.latitude,
+        initialPosition.longitude,
+        targetLat!,
+        targetLon!,
+      );
+
+      setState(() {
+        currentDistance = initialDistance;
+        heading = calculateRelativeHeading(initialBearing);
+        isLoading = false;
+      });
+
+      double lastUpdateHeading = heading;
+      double lastUpdateDistance = initialDistance;
+
       positionStream =
           Geolocator.getPositionStream(
             locationSettings: const LocationSettings(
               accuracy: LocationAccuracy.high,
+              distanceFilter: 5,
             ),
           ).listen((Position pos) {
+            if (!mounted) return;
+
             double dist = Geolocator.distanceBetween(
               pos.latitude,
               pos.longitude,
@@ -97,14 +152,34 @@ class _DistancePageState extends State<DistancePage> {
               targetLon!,
             );
 
-            setState(() {
-              currentDistance = dist;
-            });
-          });
+            double absoluteBearing = calculateBearing(
+              pos.latitude,
+              pos.longitude,
+              targetLat!,
+              targetLon!,
+            );
 
-      setState(() {
-        isLoading = false;
-      });
+            double relativeBearing = calculateRelativeHeading(absoluteBearing);
+
+            if ((relativeBearing - lastUpdateHeading).abs() > 10.0 ||
+                (dist - lastUpdateDistance).abs() > 3.0) {
+              _updateTimer?.cancel();
+              _updateTimer = Timer(const Duration(milliseconds: 500), () {
+                if (mounted) {
+                  setState(() {
+                    currentDistance = dist;
+                    heading = relativeBearing;
+                  });
+                  lastUpdateHeading = relativeBearing;
+                  lastUpdateDistance = dist;
+
+                  print(
+                    "📍 방향: $relativeBearing도 | turns: ${relativeBearing / 360.0}",
+                  );
+                }
+              });
+            }
+          });
     } catch (e) {
       print("오류 발생: $e");
       setState(() {
@@ -137,7 +212,14 @@ class _DistancePageState extends State<DistancePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Now(when: '현재 위치'),
-          Check(),
+          Padding(
+            padding: EdgeInsets.all(100.sp),
+            child: AnimatedRotation(
+              duration: const Duration(milliseconds: 800),
+              turns: heading / 360.0,
+              child: Image.asset('asset/images/Frame.png', width: 100.w),
+            ),
+          ),
           LocationText(
             distance: currentDistance != null
                 ? currentDistance!.toStringAsFixed(2)
