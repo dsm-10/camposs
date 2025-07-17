@@ -94,6 +94,18 @@ class _DistancePageState extends State<DistancePage> {
     return (bearing + 360) % 360;
   }
 
+  String getDirectionText(double heading) {
+    if (heading >= 315 || heading < 45) {
+      return '앞';
+    } else if (heading >= 45 && heading < 135) {
+      return '오른쪽';
+    } else if (heading >= 135 && heading < 225) {
+      return '뒤';
+    } else {
+      return '왼쪽';
+    }
+  }
+
   Future<Map<String, dynamic>> _start() async {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
@@ -243,6 +255,7 @@ class _DistancePageState extends State<DistancePage> {
             distance: currentDistance != null
                 ? currentDistance!.toStringAsFixed(2)
                 : '계산 중...',
+            direction: getDirectionText(heading),
           ),
           SizedBox(height: 60.h),
           Padding(

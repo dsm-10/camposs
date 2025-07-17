@@ -3,8 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LocationText extends StatelessWidget {
   final String distance;
+  final String direction;
 
-  const LocationText({super.key, required this.distance});
+  const LocationText({
+    super.key,
+    required this.distance,
+    required this.direction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,7 @@ class LocationText extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: ' 오른쪽',
+                  text: ' $direction',
                   style: TextStyle(
                     fontSize: 35.sp,
                     fontWeight: FontWeight.w400,
